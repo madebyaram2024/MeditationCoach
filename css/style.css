@@ -1,0 +1,1176 @@
+/* ==========================================================================
+   MEDITATION COACH DESIGN SYSTEM & CSS STYLES
+   ========================================================================== */
+
+/* 1. Reset and Core Variables */
+:root {
+  --font-primary: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  
+  /* Color Palette */
+  --color-bg-dark: #070714;
+  --color-bg-card: rgba(255, 255, 255, 0.03);
+  --color-bg-card-hover: rgba(255, 255, 255, 0.06);
+  --color-border-glass: rgba(255, 255, 255, 0.08);
+  
+  --color-text-primary: #f8f9fa;
+  --color-text-secondary: #a0a0c0;
+  --color-text-muted: #6b6b8b;
+  
+  /* Accent Colors */
+  --color-accent-teal: #64dfdf;
+  --color-accent-teal-glow: rgba(100, 223, 223, 0.4);
+  --color-accent-violet: #bdb2ff;
+  --color-accent-violet-glow: rgba(189, 178, 255, 0.4);
+  --color-accent-gold: #ffd166;
+  --color-accent-gold-glow: rgba(255, 209, 102, 0.4);
+  --color-accent-pink: #ffc6ff;
+  --color-accent-red: #ff758f;
+  
+  /* Layout Bounds */
+  --mobile-max-width: 480px;
+  --safe-area-top: env(safe-area-inset-top, 0px);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: var(--font-primary);
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-primary);
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Base App Container simulating mobile bounds on desktop */
+.app-container {
+  width: 100%;
+  max-width: var(--mobile-max-width);
+  height: 100%;
+  position: relative;
+  background-color: #0b0b18;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+  border-left: 1px solid rgba(255, 255, 255, 0.03);
+  border-right: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+@media (max-width: 480px) {
+  .app-container {
+    border-left: none;
+    border-right: none;
+    box-shadow: none;
+  }
+}
+
+/* 2. Global Animations & Glows */
+.welcome-bg-glow {
+  position: absolute;
+  top: -10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150%;
+  height: 50%;
+  background: radial-gradient(circle, rgba(189, 178, 255, 0.15) 0%, rgba(100, 223, 223, 0.05) 50%, rgba(0, 0, 0, 0) 100%);
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Animation utilities */
+.animate-fade-in {
+  animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.delay-1 { animation-delay: 0.15s; }
+.delay-2 { animation-delay: 0.3s; }
+.delay-3 { animation-delay: 0.45s; }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 3. View Routing System (Cross-Fade) */
+.view {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+  box-sizing: border-box;
+}
+
+.view.active {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 5;
+}
+
+/* 4. Welcome Screen Styling */
+#welcome-view {
+  padding: calc(24px + var(--safe-area-top)) 24px calc(24px + var(--safe-area-bottom));
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+#welcome-view::-webkit-scrollbar {
+  display: none; /* Safari/Chrome */
+}
+
+.header {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 24px;
+}
+
+.logo-wrapper {
+  display: inline-flex;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: rgba(11, 11, 24, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(100, 223, 223, 0.15);
+  margin-bottom: 12px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  animation: logoGlowPulse 4s infinite ease-in-out;
+}
+
+#logo-canvas {
+  width: 90px;
+  height: 90px;
+  display: block;
+}
+
+@keyframes logoGlowPulse {
+  0%, 100% {
+    box-shadow: 0 8px 32px 0 rgba(100, 223, 223, 0.15);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 8px 40px 4px rgba(100, 223, 223, 0.35);
+    transform: scale(1.03);
+  }
+}
+
+.logo-icon {
+  width: 44px;
+  height: 44px;
+  color: var(--color-accent-teal);
+  filter: drop-shadow(0 0 8px var(--color-accent-teal-glow));
+}
+
+.app-title {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, var(--color-text-primary) 30%, var(--color-accent-violet) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 4px;
+}
+
+.tagline {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+.welcome-main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  flex-grow: 1;
+}
+
+/* Card UI components */
+.card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 20px 22px;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+}
+
+.card-body h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--color-text-primary);
+}
+
+.card-body p {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+/* Info Card */
+.info-card {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%) !important;
+  border-color: rgba(100, 223, 223, 0.15) !important;
+}
+
+.card-icon {
+  font-size: 24px;
+  line-height: 1;
+  padding: 8px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* Timer Buttons Grid */
+.selector-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.section-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  padding-left: 4px;
+  letter-spacing: 0.3px;
+}
+
+.timer-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+/* 30s spans across 2 columns to fill */
+.timer-btn:first-child {
+  grid-column: span 2;
+  height: 60px;
+}
+
+.timer-btn {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  color: var(--color-text-primary);
+  height: 80px;
+}
+
+.timer-btn:hover, .timer-btn:active {
+  background: linear-gradient(135deg, rgba(100, 223, 223, 0.08) 0%, rgba(189, 178, 255, 0.04) 100%);
+  border-color: rgba(100, 223, 223, 0.35);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(100, 223, 223, 0.12);
+}
+
+.btn-time {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-accent-teal);
+  letter-spacing: -0.5px;
+}
+
+.btn-label {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+/* Stats Row */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.stat-box {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 14px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stat-box:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+.stat-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-accent-teal);
+  text-shadow: 0 0 12px var(--color-accent-teal-glow);
+  margin-bottom: 2px;
+}
+
+.stat-label {
+  font-size: 10px;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Donation Card */
+.donation-card {
+  background: linear-gradient(135deg, rgba(255, 117, 143, 0.05) 0%, rgba(189, 178, 255, 0.03) 100%) !important;
+  border-color: rgba(255, 117, 143, 0.18) !important;
+  margin-bottom: 16px;
+}
+
+.donation-card p {
+  margin-bottom: 12px;
+}
+
+/* Buttons */
+.btn {
+  font-family: var(--font-primary);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-accent-teal) 0%, var(--color-accent-violet) 100%);
+  color: #070714;
+  box-shadow: 0 8px 20px rgba(100, 223, 223, 0.2);
+}
+
+.btn-primary:active {
+  transform: scale(0.97);
+  box-shadow: 0 4px 10px rgba(100, 223, 223, 0.1);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.btn-secondary:hover, .btn-secondary:active {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.btn-block {
+  width: 100%;
+  height: 44px;
+}
+
+.btn-sm {
+  font-size: 11px;
+  padding: 8px 14px;
+  border-radius: 8px;
+}
+
+/* 5. Meditation Session View (Pitch Dark + Ethereal) */
+#meditation-view {
+  background: transparent;
+  overflow: hidden;
+  justify-content: space-between;
+  padding: calc(16px + var(--safe-area-top)) 20px calc(24px + var(--safe-area-bottom));
+}
+
+#aurora-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.meditation-header {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.icon-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--color-text-primary);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.icon-btn:active {
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(0.92);
+}
+
+.session-duration-display {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 6px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.meditation-content {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end; /* Push card towards the bottom */
+  flex-grow: 1;
+  padding-bottom: 40px; /* Leave space above playback controls */
+  box-sizing: border-box;
+}
+
+/* New Unified Glassmorphic Breath Dashboard Card */
+.breath-dashboard-card {
+  width: 100%;
+  max-width: 340px;
+  background: rgba(11, 11, 24, 0.45) !important;
+  border-color: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px;
+  border-radius: 24px;
+}
+
+.breath-state-wrapper {
+  text-align: center;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.breath-prompt {
+  color: var(--color-text-primary);
+  text-align: center;
+}
+
+/* Timer Circular Countdown Overlay */
+.countdown-circle-wrapper {
+  position: relative;
+  width: 76px;
+  height: 76px;
+}
+
+.countdown-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.countdown-bg {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.03);
+  stroke-width: 4;
+}
+
+.countdown-progress {
+  fill: none;
+  stroke: var(--color-accent-teal);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: 283;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1s linear;
+}
+
+.countdown-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.mindfulness-quote {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  text-align: center;
+  font-style: italic;
+  max-width: 260px;
+  line-height: 1.6;
+  height: 44px; /* fixed size to avoid layout shifting on text transition */
+  transition: opacity 0.5s ease;
+}
+
+/* Audio Controls Footer */
+.meditation-controls {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.control-btn {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.play-btn {
+  background: var(--color-text-primary);
+  color: var(--color-bg-dark);
+  box-shadow: 0 8px 30px rgba(255, 255, 255, 0.2);
+}
+
+.play-btn:active {
+  transform: scale(0.92);
+}
+
+/* 6. Soundscape Ambient Mixer Overlay */
+.mixer-panel {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(11, 11, 24, 0.85);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  padding: 24px 20px calc(24px + var(--safe-area-bottom));
+  z-index: 10;
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mixer-panel.active {
+  transform: translateY(0);
+}
+
+.mixer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.mixer-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.text-btn {
+  background: none;
+  border: none;
+  color: var(--color-accent-teal);
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.mixer-sliders {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mixer-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mixer-label {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+/* Sliders */
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-accent-teal);
+  box-shadow: 0 0 10px var(--color-accent-teal-glow);
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.slider::-webkit-slider-thumb:active {
+  transform: scale(1.25);
+}
+
+/* 7. Modal & Overlays */
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(4, 4, 10, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal {
+  width: 100%;
+  max-width: 380px;
+  background: linear-gradient(135deg, rgba(20, 20, 42, 0.9) 0%, rgba(10, 10, 26, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  transform: scale(0.92) translateY(10px);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+}
+
+.modal-overlay.active .modal {
+  transform: scale(1) translateY(0);
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-close-btn:active {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.modal-header {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.modal-header h2 {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  margin-top: 10px;
+}
+
+.heart-icon-glow {
+  font-size: 38px;
+  line-height: 1;
+  filter: drop-shadow(0 0 10px rgba(255, 117, 143, 0.3));
+}
+
+.check-icon-glow {
+  font-size: 38px;
+  line-height: 1;
+  filter: drop-shadow(0 0 10px rgba(255, 209, 102, 0.3));
+}
+
+.sparkle-anim {
+  font-size: 44px;
+  line-height: 1;
+  margin-bottom: 12px;
+  animation: float 3s infinite ease-in-out;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal-body p {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* Donation choices inside modal */
+.donation-options {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.donate-opt-btn {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 10px 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.donate-opt-btn.active {
+  background: rgba(100, 223, 223, 0.12);
+  border-color: var(--color-accent-teal);
+  color: var(--color-accent-teal);
+  box-shadow: 0 0 12px rgba(100, 223, 223, 0.1);
+}
+
+/* Custom amount input */
+#custom-donate-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#custom-donate-input-wrapper label {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+#custom-donate-input-wrapper input {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-family: var(--font-primary);
+  font-size: 14px;
+  color: var(--color-text-primary);
+  outline: none;
+}
+
+#custom-donate-input-wrapper input:focus {
+  border-color: var(--color-accent-teal);
+  box-shadow: 0 0 10px rgba(100, 223, 223, 0.08);
+}
+
+.modal-footer-note {
+  font-size: 10px !important;
+  color: var(--color-text-muted) !important;
+}
+
+/* Session Completion Details Box */
+.session-summary-box {
+  display: flex;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.summary-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.summary-item:first-child {
+  border-right: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.summary-val {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-accent-teal);
+}
+
+.summary-lbl {
+  font-size: 10px;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+.donation-appeal-card {
+  background: linear-gradient(135deg, rgba(255, 198, 255, 0.04) 0%, rgba(100, 223, 223, 0.02) 100%);
+  border-color: rgba(255, 198, 255, 0.1);
+  padding: 14px;
+}
+
+.donation-appeal-card h4 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-accent-pink);
+  margin-bottom: 4px;
+  text-align: center;
+}
+
+.donation-appeal-card p {
+  font-size: 11px;
+  margin-bottom: 10px;
+}
+
+.donation-appeal-card button {
+  display: flex;
+  margin: 0 auto;
+}
+
+/* Utility classes */
+.hidden {
+  display: none !important;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.quote-italic {
+  font-style: italic;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  margin: 8px 0;
+}
+
+/* Pre-Session Countdown Screen Overlay */
+.pre-session-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(6, 6, 18, 0.65); /* Translucent dark background */
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Sit on top of controls and dashboard */
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), backdrop-filter 0.6s ease, -webkit-backdrop-filter 0.6s ease;
+}
+
+.pre-session-overlay.hidden {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.pre-session-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  max-width: 280px;
+}
+
+.pre-session-content h2 {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  color: var(--color-text-primary);
+  opacity: 0.9;
+}
+
+.pre-session-countdown {
+  font-size: 80px;
+  font-weight: 800;
+  color: var(--color-accent-teal);
+  text-shadow: 0 0 30px var(--color-accent-teal-glow);
+  line-height: 1;
+}
+
+.pre-session-countdown.pulse {
+  animation: countdownPulse 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.pre-session-content p {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+@keyframes countdownPulse {
+  0% {
+    transform: scale(0.5);
+    opacity: 0.1;
+  }
+  30% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.0);
+    opacity: 1;
+  }
+}
+
+/* ==========================================================================
+   PWA INSTALLATION INSTRUCTIONS STYLING
+   ========================================================================== */
+.welcome-top-actions {
+  position: absolute;
+  top: calc(16px + var(--safe-area-top));
+  right: 20px;
+  z-index: 10;
+}
+
+.install-badge-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 6px 12px;
+  color: var(--color-accent-teal);
+  font-family: var(--font-primary);
+  font-size: 11px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.install-badge-btn:hover, .install-badge-btn:active {
+  background: rgba(100, 223, 223, 0.08);
+  border-color: rgba(100, 223, 223, 0.35);
+  transform: translateY(-1px);
+}
+
+.download-icon-glow {
+  font-size: 38px;
+  line-height: 1;
+  filter: drop-shadow(0 0 10px rgba(100, 223, 223, 0.3));
+}
+
+.tabs-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.tab-headers {
+  display: flex;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 12px;
+  padding: 4px;
+  gap: 4px;
+}
+
+.tab-header-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  font-family: var(--font-primary);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  padding: 8px 0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tab-header-btn.active {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-accent-teal);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.tab-panel {
+  display: none;
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
+.steps-list {
+  padding-left: 20px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.steps-list li {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.steps-list strong {
+  color: var(--color-text-primary);
+}
+
+.ios-share-icon, .android-menu-icon, .desktop-install-icon {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 11px;
+  font-weight: bold;
+  color: var(--color-accent-teal);
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1;
+  margin: 0 2px;
+}
+
+/* ==========================================================================
+   CASH APP DONATION PANEL STYLING
+   ========================================================================== */
+.cashapp-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 20px;
+  width: 100%;
+}
+
+.qr-code-wrapper {
+  background: #ffffff;
+  padding: 12px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  display: inline-flex;
+}
+
+.qr-code-img {
+  width: 150px;
+  height: 150px;
+  display: block;
+}
+
+.cashtag-display {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-accent-teal);
+  letter-spacing: 0.5px;
+}
+
+.cashtag-symbol {
+  color: var(--color-text-secondary);
+  margin-right: 2px;
+}
+
+.cashapp-link-btn {
+  text-decoration: none;
+}
