@@ -20,4 +20,4 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
-Sitemap: https://yourdomain.com/sitemap.xml
+Sitemap: https://madebyaram2024.github.io/MeditationCoach/sitemap.xml
