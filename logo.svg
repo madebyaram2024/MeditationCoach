@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <radialGradient id="bg-glow" cx="50%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#12122c"/>
+      <stop offset="100%" stop-color="#070714"/>
+    </radialGradient>
+    <linearGradient id="ring-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#64dfdf"/>
+      <stop offset="50%" stop-color="#ffd166"/>
+      <stop offset="100%" stop-color="#bdb2ff"/>
+    </linearGradient>
+    <filter id="neon-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="12" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#bg-glow)"/>
+  <circle cx="256" cy="256" r="180" fill="none" stroke="url(#ring-gradient)" stroke-width="12" filter="url(#neon-glow)"/>
+  <!-- Meditation silhouette -->
+  <path d="M256,120 A30,30 0 1,1 256,180 A30,30 0 1,1 256,120 Z" fill="#ffd166" filter="url(#neon-glow)"/>
+  <path d="M256,200 C210,200 180,240 180,290 C180,310 196,330 220,330 C230,330 240,320 256,305 C272,320 282,330 292,330 C316,330 332,310 332,290 C332,240 302,200 256,200 Z" fill="#64dfdf" filter="url(#neon-glow)"/>
+  <path d="M220,330 C190,330 160,350 140,380 C130,395 140,410 160,410 C190,410 230,390 256,365 C282,390 322,410 352,410 C372,410 382,395 372,380 C352,350 322,330 292,330 C276,330 266,340 256,350 C246,340 236,330 220,330 Z" fill="#bdb2ff" filter="url(#neon-glow)"/>
+</svg>

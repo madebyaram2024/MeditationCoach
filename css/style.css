@@ -1173,6 +1173,22 @@ button, a, .timer-btn, .preset-btn, .pattern-btn {
   transform: translateY(-1px);
 }
 
+.install-badge-btn.ready-to-install {
+  border-color: var(--color-accent-teal);
+  box-shadow: 0 0 12px var(--color-accent-teal-glow);
+  background: rgba(100, 223, 223, 0.08);
+  animation: pulse-border-glow 2s infinite alternate ease-in-out;
+}
+
+@keyframes pulse-border-glow {
+  0% {
+    box-shadow: 0 0 8px rgba(100, 223, 223, 0.15);
+  }
+  100% {
+    box-shadow: 0 0 16px rgba(100, 223, 223, 0.45);
+  }
+}
+
 .download-icon-glow {
   font-size: 38px;
   line-height: 1;

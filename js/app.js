@@ -38,6 +38,7 @@ class MeditationApp {
     this.secondsRemaining = 0;
     this.timerId = null;
     this.isPaused = false;
+    this.deferredPrompt = null;
     this.stats = {
       sessions: 0,
       minutes: 0,
@@ -60,6 +61,15 @@ class MeditationApp {
   init() {
     this.loadStats();
     this.setupEventListeners();
+    
+    // Register Service Worker for PWA capabilities
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then(reg => console.log('PWA Service Worker registered:', reg.scope))
+          .catch(err => console.warn('PWA Service Worker registration failed:', err));
+      });
+    }
     
     // Connect breathing coach to prompt element
     const breathingPrompt = document.getElementById('breathing-prompt');
@@ -161,15 +171,59 @@ class MeditationApp {
       this.thankYouModal.classList.remove('active');
     });
 
-    // 5b. Installation Instructions Modal Buttons & Tabs
+    // 5b. Installation Instructions Modal Buttons & Tabs / One-Click PWA shortcut Install
     const openInstallBtn = document.getElementById('open-install-btn');
     const closeInstallBtn = document.getElementById('close-install-btn');
     const installDoneBtn = document.getElementById('install-done-btn');
     const installModal = document.getElementById('install-modal');
 
+    // Listen for PWA installation trigger from browser
+    window.addEventListener('beforeinstallprompt', (e) => {
+      // Prevent browser default infobar overlay
+      e.preventDefault();
+      // Store the event so we can trigger it upon button click
+      this.deferredPrompt = e;
+      
+      // Update UI button to reflect one-click installation availability
+      if (openInstallBtn) {
+        openInstallBtn.classList.add('ready-to-install');
+        openInstallBtn.innerHTML = `
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="13" height="13">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+          </svg>
+          Add Shortcut
+        `;
+      }
+    });
+
+    // Handle successful shortcut installation
+    window.addEventListener('appinstalled', (evt) => {
+      console.log('Meditation Coach PWA was installed successfully!');
+      this.deferredPrompt = null;
+      if (openInstallBtn) {
+        openInstallBtn.classList.remove('ready-to-install');
+        openInstallBtn.style.display = 'none'; // hide installer button
+      }
+    });
+
     if (openInstallBtn) {
       openInstallBtn.addEventListener('click', () => {
-        installModal.classList.add('active');
+        if (this.deferredPrompt) {
+          // Trigger PWA installation prompt
+          this.deferredPrompt.prompt();
+          this.deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+              console.log('User accepted PWA installation');
+            } else {
+              console.log('User dismissed PWA installation');
+            }
+            this.deferredPrompt = null;
+            openInstallBtn.classList.remove('ready-to-install');
+          });
+        } else {
+          // Fallback to step-by-step instructions for non-supporting browsers (like iOS Safari)
+          installModal.classList.add('active');
+        }
       });
     }
 

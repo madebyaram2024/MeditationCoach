@@ -1,0 +1,24 @@
+{
+  "name": "Meditation Coach",
+  "short_name": "Meditation",
+  "description": "A 100% free and ad-free meditation assistant. Calming breathing exercises, synthesized ambient soundscapes, and streak trackers.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#070714",
+  "theme_color": "#070714",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "logo.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any"
+    },
+    {
+      "src": "logo.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "maskable"
+    }
+  ]
+}
