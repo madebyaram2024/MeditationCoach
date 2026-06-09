@@ -1316,3 +1316,116 @@ button, a, .timer-btn, .preset-btn, .pattern-btn {
 .cashapp-link-btn {
   text-decoration: none;
 }
+
+/* ==========================================================================
+   APP SPLASH SCREEN LOADER
+   ========================================================================== */
+.splash-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #070714;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.8s;
+}
+
+.splash-screen.fade-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.splash-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 24px;
+}
+
+.splash-logo-wrapper {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+  box-shadow: 0 0 32px rgba(100, 223, 223, 0.15);
+  animation: logoBreath 3s infinite ease-in-out;
+}
+
+.splash-logo {
+  width: 84px;
+  height: 84px;
+  display: block;
+}
+
+.splash-title {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, var(--color-text-primary) 30%, var(--color-accent-teal) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.splash-loader {
+  width: 120px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.loader-line {
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-accent-teal), var(--color-accent-violet));
+  border-radius: 10px;
+  position: absolute;
+  animation: loaderMove 1.5s infinite ease-in-out;
+}
+
+.splash-subtitle {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-weight: 500;
+  opacity: 0.8;
+  margin-top: 4px;
+}
+
+@keyframes logoBreath {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 32px rgba(100, 223, 223, 0.15);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 48px rgba(100, 223, 223, 0.35);
+  }
+}
+
+@keyframes loaderMove {
+  0% {
+    left: -40%;
+  }
+  50% {
+    left: 100%;
+  }
+  100% {
+    left: -40%;
+  }
+}

@@ -90,6 +90,14 @@ class MeditationApp {
       this.logoCanvas.init(logoCanvasEl, true);
       this.logoCanvas.start();
     }
+
+    // Hide App Splash Screen Loader after a short calming delay (1.8 seconds)
+    setTimeout(() => {
+      const splash = document.getElementById('splash-screen');
+      if (splash) {
+        splash.classList.add('fade-out');
+      }
+    }, 1800);
   }
 
   /**
