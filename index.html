@@ -13,7 +13,9 @@
   <meta name="theme-color" content="#0d0d1e">
   <!-- Web App Manifest capabilities -->
   <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2246%22 fill=%22%23070714%22 stroke=%22%2364dfdf%22 stroke-width=%224%22/><text x=%2250%%22 y=%2257%%22 font-size=%2250%22 text-anchor=%22middle%22>🧘</text></svg>">
 
   <!-- JSON-LD Structured Data for AI Search Engines -->
   <script type="application/ld+json">
@@ -69,6 +71,41 @@
           <div class="card-body">
             <h3>Start Your Journey</h3>
             <p>Welcome to Meditation Coach. This is a <strong>100% free</strong>, ad-free space built to help you find clarity, reduce anxiety, and sleep deeply.</p>
+          </div>
+        </div>
+
+        <!-- Breathing Pattern Selector -->
+        <div class="selector-section">
+          <h2 class="section-title">Select Breathing Exercise</h2>
+          <div class="pattern-grid">
+            <button class="pattern-btn active" data-pattern="box" aria-label="Box Breathing">
+              <span class="pattern-icon">🟦</span>
+              <div class="pattern-text">
+                <span class="pattern-name">Box Breathing</span>
+                <span class="pattern-desc">4s In, 4s Hold, 4s Out, 4s Rest</span>
+              </div>
+            </button>
+            <button class="pattern-btn" data-pattern="sleep" aria-label="4-7-8 Sleep">
+              <span class="pattern-icon">🌙</span>
+              <div class="pattern-text">
+                <span class="pattern-name">4-7-8 Sleep</span>
+                <span class="pattern-desc">4s In, 7s Hold, 8s Out</span>
+              </div>
+            </button>
+            <button class="pattern-btn" data-pattern="calm" aria-label="Deep Calm">
+              <span class="pattern-icon">🌊</span>
+              <div class="pattern-text">
+                <span class="pattern-name">Deep Calm</span>
+                <span class="pattern-desc">5s In, 5s Out</span>
+              </div>
+            </button>
+            <button class="pattern-btn" data-pattern="energize" aria-label="Awakening">
+              <span class="pattern-icon">⚡</span>
+              <div class="pattern-text">
+                <span class="pattern-name">Awakening</span>
+                <span class="pattern-desc">2s In, 2s Out</span>
+              </div>
+            </button>
           </div>
         </div>
 
@@ -188,6 +225,12 @@
         <div class="mixer-header">
           <h3>Ambient Mixer</h3>
           <button id="mixer-close-btn" class="text-btn">Done</button>
+        </div>
+        <div class="mixer-presets">
+          <button class="preset-btn" data-preset="space">🌌 Deep Space</button>
+          <button class="preset-btn" data-preset="rain">⛈️ Rainy Sanctuary</button>
+          <button class="preset-btn" data-preset="temple">🛕 Zen Temple</button>
+          <button class="preset-btn" data-preset="focus">🧠 Binaural Focus</button>
         </div>
         <div class="mixer-sliders">
           <!-- Drone Carrier Pad -->

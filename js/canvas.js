@@ -186,21 +186,26 @@ class MeditationCanvas {
     this.time += 0.002;
 
     if (this.isLogoMode) {
-      // Autonomous breathing cycle for the logo: 12 second cycle
-      // 0-4s: inhale, 4-8s: hold, 8-12s: exhale
-      const cycleTime = (Date.now() / 1000) % 12;
-      if (cycleTime < 4) {
-        this.breathState = 'inhale';
-        this.breathProgress = cycleTime / 4;
-        this.isRestingState = false;
-      } else if (cycleTime < 8) {
-        this.breathState = 'hold';
-        this.breathProgress = (cycleTime - 4) / 4;
-        this.isRestingState = false;
-      } else {
-        this.breathState = 'exhale';
-        this.breathProgress = (cycleTime - 8) / 4;
-        this.isRestingState = false;
+      // Autonomous breathing cycle for the logo: dynamically matching selected pattern states
+      const states = (window.breathingCoach && window.breathingCoach.states) ? window.breathingCoach.states : [
+        { name: 'inhale', duration: 4 },
+        { name: 'hold',   duration: 4 },
+        { name: 'exhale', duration: 4 }
+      ];
+
+      const totalCycleDuration = states.reduce((sum, s) => sum + s.duration, 0);
+      const cycleTime = (Date.now() / 1000) % totalCycleDuration;
+
+      let accumTime = 0;
+      for (let i = 0; i < states.length; i++) {
+        const state = states[i];
+        if (cycleTime >= accumTime && cycleTime < accumTime + state.duration) {
+          this.breathState = state.name;
+          this.breathProgress = (cycleTime - accumTime) / state.duration;
+          this.isRestingState = state.isResting || false;
+          break;
+        }
+        accumTime += state.duration;
       }
     } else {
       // Sync state and smooth progress from the breathing timing coach in real time

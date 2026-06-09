@@ -60,6 +60,37 @@ class BreathingCoach {
   }
 
   /**
+   * Configures the breathing pattern states list dynamically
+   * @param {string} patternKey - 'box', 'sleep', 'calm', 'energize'
+   */
+  setPattern(patternKey) {
+    const presets = {
+      box: [
+        { name: 'inhale', duration: 4, label: 'Inhale' },
+        { name: 'hold',   duration: 4, label: 'Hold' },
+        { name: 'exhale', duration: 4, label: 'Exhale' },
+        { name: 'hold',   duration: 4, label: 'Rest', isResting: true }
+      ],
+      sleep: [
+        { name: 'inhale', duration: 4, label: 'Inhale' },
+        { name: 'hold',   duration: 7, label: 'Hold' },
+        { name: 'exhale', duration: 8, label: 'Exhale' }
+      ],
+      calm: [
+        { name: 'inhale', duration: 5, label: 'Inhale' },
+        { name: 'exhale', duration: 5, label: 'Exhale' }
+      ],
+      energize: [
+        { name: 'inhale', duration: 2, label: 'Inhale' },
+        { name: 'exhale', duration: 2, label: 'Exhale' }
+      ]
+    };
+
+    this.states = presets[patternKey] || presets.box;
+    this.reset();
+  }
+
+  /**
    * Starts the breathing cycle
    */
   start() {
@@ -135,7 +166,7 @@ class BreathingCoach {
     this.secondsLeftInState = currentState.duration;
     this.currentStateDuration = currentState.duration;
     this.currentStateName = currentState.name;
-    this.isRestingState = false; // Rest state removed
+    this.isRestingState = currentState.isResting || false;
     this.stateStartTime = Date.now();
     this.pausedElapsed = 0;
 

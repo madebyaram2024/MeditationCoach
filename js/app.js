@@ -65,6 +65,10 @@ class MeditationApp {
     const breathingPrompt = document.getElementById('breathing-prompt');
     window.breathingCoach.init(null, breathingPrompt);
 
+    // Initialize saved breathing pattern
+    const savedPattern = localStorage.getItem('mc_breathing_pattern') || 'box';
+    this.selectPattern(savedPattern);
+
     // Initialize Main Session Canvas (deferred start until session active)
     const auroraCanvas = document.getElementById('aurora-canvas');
     window.meditationCanvas.init(auroraCanvas);
@@ -113,18 +117,27 @@ class MeditationApp {
       this.mixerPanel.classList.remove('active');
     });
 
+    // Helper to clear active preset button highlight
+    const clearPresetActive = () => {
+      document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+    };
+
     // 4. Audio Mixer Volume Sliders
     this.volDroneSlider.addEventListener('input', (e) => {
       window.audioEngine.setDroneVolume(e.target.value);
+      clearPresetActive();
     });
     this.volRainSlider.addEventListener('input', (e) => {
       window.audioEngine.setRainVolume(e.target.value);
+      clearPresetActive();
     });
     this.volBowlSlider.addEventListener('input', (e) => {
       window.audioEngine.setBowlVolume(e.target.value);
+      clearPresetActive();
     });
     this.volBinauralSlider.addEventListener('input', (e) => {
       window.audioEngine.setBinauralVolume(e.target.value);
+      clearPresetActive();
     });
 
     // 5. Donation Modal Buttons
@@ -203,6 +216,30 @@ class MeditationApp {
       tabDesktop.addEventListener('click', () => switchInstallTab(tabDesktop, contentDesktop));
     }
 
+    // 5c. Breathing Pattern Selector Button Listeners
+    const patternBtns = document.querySelectorAll('.pattern-btn');
+    patternBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const patternKey = e.currentTarget.getAttribute('data-pattern');
+        this.selectPattern(patternKey);
+      });
+    });
+
+    // 5d. Ambient Mixer Preset Button Listeners
+    const presetBtns = document.querySelectorAll('.preset-btn');
+    presetBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const presetKey = e.currentTarget.getAttribute('data-preset');
+        this.applyAudioPreset(presetKey);
+      });
+    });
+
+    // 5e. Global Haptic Feedback Trigger on all buttons
+    const interactiveEls = document.querySelectorAll('button, a, .timer-btn, .pattern-btn, .preset-btn, .install-badge-btn');
+    interactiveEls.forEach(el => {
+      el.addEventListener('click', () => this.triggerHaptic());
+    });
+
     // 6. Completion Modal Buttons
     document.getElementById('complete-done-btn').addEventListener('click', () => {
       this.completionModal.classList.remove('active');
@@ -220,6 +257,77 @@ class MeditationApp {
    */
   openDonationModal() {
     this.donationModal.classList.add('active');
+  }
+
+  /**
+   * Triggers a subtle tactile haptic vibration click on mobile devices
+   */
+  triggerHaptic() {
+    if ('vibrate' in navigator) {
+      navigator.vibrate(12); // subtle 12ms native pulse
+    }
+  }
+
+  /**
+   * Selects and configures the active breathing exercise pattern
+   * @param {string} patternKey 
+   */
+  selectPattern(patternKey) {
+    this.selectedPattern = patternKey;
+    localStorage.setItem('mc_breathing_pattern', patternKey);
+
+    // Update active visual highlights in DOM
+    document.querySelectorAll('.pattern-btn').forEach(btn => {
+      if (btn.getAttribute('data-pattern') === patternKey) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    // Propagate pattern to breathing coach
+    if (window.breathingCoach) {
+      window.breathingCoach.setPattern(patternKey);
+    }
+  }
+
+  /**
+   * Applies an ambient soundscape mixing preset
+   * @param {string} presetKey 
+   */
+  applyAudioPreset(presetKey) {
+    const presets = {
+      space: { drone: 0.8, rain: 0.0, bowl: 0.3, binaural: 0.6 },
+      rain: { drone: 0.4, rain: 0.85, bowl: 0.3, binaural: 0.0 },
+      temple: { drone: 0.65, rain: 0.0, bowl: 0.8, binaural: 0.0 },
+      focus: { drone: 0.5, rain: 0.15, bowl: 0.0, binaural: 0.7 }
+    };
+
+    const config = presets[presetKey];
+    if (!config) return;
+
+    // 1. Update sliders in UI
+    this.volDroneSlider.value = config.drone;
+    this.volRainSlider.value = config.rain;
+    this.volBowlSlider.value = config.bowl;
+    this.volBinauralSlider.value = config.binaural;
+
+    // 2. Adjust volume nodes in audio engine
+    if (window.audioEngine) {
+      window.audioEngine.setDroneVolume(config.drone);
+      window.audioEngine.setRainVolume(config.rain);
+      window.audioEngine.setBowlVolume(config.bowl);
+      window.audioEngine.setBinauralVolume(config.binaural);
+    }
+
+    // 3. Highlight the active preset button
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      if (btn.getAttribute('data-preset') === presetKey) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
   }
 
   /**
