@@ -1,5 +1,5 @@
 /* ==========================================================================
-   MEDITATION COACH - STARFIELD, AURORA & COSMIC VORTEX CANVAS ENGINE
+   AETHER - STARFIELD, AURORA & COSMIC VORTEX CANVAS ENGINE
    ========================================================================== */
 
 class MeditationCanvas {

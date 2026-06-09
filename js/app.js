@@ -1,5 +1,5 @@
 /* ==========================================================================
-   MEDITATION COACH - MAIN APPLICATION COORDINATOR
+   AETHER - MAIN APPLICATION COORDINATOR
    ========================================================================= */
 
 class MeditationApp {
@@ -13,11 +13,7 @@ class MeditationApp {
     this.completionModal = document.getElementById('completion-modal');
     this.thankYouModal = document.getElementById('thankyou-modal');
 
-    // UI Sliders
-    this.volDroneSlider = document.getElementById('volume-drone');
-    this.volRainSlider = document.getElementById('volume-rain');
-    this.volBowlSlider = document.getElementById('volume-bowl');
-    this.volBinauralSlider = document.getElementById('volume-binaural');
+    // (Sliders replaced by Segmented Volume Capsules)
 
     // Interactive Buttons
     this.exitSessionBtn = document.getElementById('exit-session-btn');
@@ -140,22 +136,29 @@ class MeditationApp {
       document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
     };
 
-    // 4. Audio Mixer Volume Sliders
-    this.volDroneSlider.addEventListener('input', (e) => {
-      window.audioEngine.setDroneVolume(e.target.value);
-      clearPresetActive();
-    });
-    this.volRainSlider.addEventListener('input', (e) => {
-      window.audioEngine.setRainVolume(e.target.value);
-      clearPresetActive();
-    });
-    this.volBowlSlider.addEventListener('input', (e) => {
-      window.audioEngine.setBowlVolume(e.target.value);
-      clearPresetActive();
-    });
-    this.volBinauralSlider.addEventListener('input', (e) => {
-      window.audioEngine.setBinauralVolume(e.target.value);
-      clearPresetActive();
+    // 4. Segmented Volume Controls Listeners
+    const segmentBtns = document.querySelectorAll('.vol-segment-btn');
+    segmentBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const targetBtn = e.currentTarget;
+        const parentSegments = targetBtn.parentElement;
+        const channel = parentSegments.getAttribute('data-channel');
+        const level = parseFloat(targetBtn.getAttribute('data-level'));
+
+        // Toggle active visual state in this group
+        parentSegments.querySelectorAll('.vol-segment-btn').forEach(b => b.classList.remove('active'));
+        targetBtn.classList.add('active');
+
+        // Apply to audio engine
+        if (window.audioEngine) {
+          if (channel === 'drone') window.audioEngine.setDroneVolume(level);
+          else if (channel === 'rain') window.audioEngine.setRainVolume(level);
+          else if (channel === 'bowl') window.audioEngine.setBowlVolume(level);
+          else if (channel === 'binaural') window.audioEngine.setBinauralVolume(level);
+        }
+
+        clearPresetActive();
+      });
     });
 
     // 5. Donation Modal Buttons
@@ -206,7 +209,7 @@ class MeditationApp {
 
     // Handle successful shortcut installation
     window.addEventListener('appinstalled', (evt) => {
-      console.log('Meditation Coach PWA was installed successfully!');
+      console.log('Aether PWA was installed successfully!');
       this.deferredPrompt = null;
       if (openInstallBtn) {
         openInstallBtn.classList.remove('ready-to-install');
@@ -297,7 +300,7 @@ class MeditationApp {
     });
 
     // 5e. Global Haptic Feedback Trigger on all buttons
-    const interactiveEls = document.querySelectorAll('button, a, .timer-btn, .pattern-btn, .preset-btn, .install-badge-btn');
+    const interactiveEls = document.querySelectorAll('button, a, .timer-btn, .pattern-btn, .preset-btn, .install-badge-btn, .vol-segment-btn');
     interactiveEls.forEach(el => {
       el.addEventListener('click', () => this.triggerHaptic());
     });
@@ -368,11 +371,35 @@ class MeditationApp {
     const config = presets[presetKey];
     if (!config) return;
 
-    // 1. Update sliders in UI
-    this.volDroneSlider.value = config.drone;
-    this.volRainSlider.value = config.rain;
-    this.volBowlSlider.value = config.bowl;
-    this.volBinauralSlider.value = config.binaural;
+    // Helper to find and activate closest segment button
+    const activateClosestSegment = (channel, volume) => {
+      const parent = document.querySelector(`.volume-segments[data-channel="${channel}"]`);
+      if (!parent) return;
+
+      const buttons = parent.querySelectorAll('.vol-segment-btn');
+      let closestBtn = null;
+      let minDiff = Infinity;
+
+      buttons.forEach(btn => {
+        const btnLevel = parseFloat(btn.getAttribute('data-level'));
+        const diff = Math.abs(btnLevel - volume);
+        if (diff < minDiff) {
+          minDiff = diff;
+          closestBtn = btn;
+        }
+      });
+
+      if (closestBtn) {
+        buttons.forEach(b => b.classList.remove('active'));
+        closestBtn.classList.add('active');
+      }
+    };
+
+    // 1. Update active segments in UI
+    activateClosestSegment('drone', config.drone);
+    activateClosestSegment('rain', config.rain);
+    activateClosestSegment('bowl', config.bowl);
+    activateClosestSegment('binaural', config.binaural);
 
     // 2. Adjust volume nodes in audio engine
     if (window.audioEngine) {

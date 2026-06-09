@@ -1,7 +1,7 @@
 {
-  "name": "Meditation Coach",
-  "short_name": "Meditation",
-  "description": "A 100% free and ad-free meditation assistant. Calming breathing exercises, synthesized ambient soundscapes, and streak trackers.",
+  "name": "Aether",
+  "short_name": "Aether",
+  "description": "A 100% free and ad-free cosmic breath assistant. Calming breathing exercises, synthesized ambient soundscapes, and streak trackers.",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#070714",

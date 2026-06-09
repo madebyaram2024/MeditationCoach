@@ -1,5 +1,5 @@
 /* ==========================================================================
-   MEDITATION COACH - BREATHING COORDINATOR (EPOCH TIMING SYNCED)
+   AETHER - BREATHING COORDINATOR (EPOCH TIMING SYNCED)
    ========================================================================= */
 
 class BreathingCoach {

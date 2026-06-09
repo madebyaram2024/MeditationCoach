@@ -1,5 +1,5 @@
 /* ==========================================================================
-   MEDITATION COACH DESIGN SYSTEM & CSS STYLES
+   AETHER DESIGN SYSTEM & CSS STYLES
    ========================================================================== */
 
 /* 1. Reset and Core Variables */
@@ -777,45 +777,73 @@ button, a, .timer-btn, .preset-btn, .pattern-btn {
 .mixer-sliders {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
 }
 
-.mixer-row {
+.volume-control-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.volume-control-group:last-child {
+  border-bottom: none;
+}
+
+.volume-info {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 2px;
+  max-width: 50%;
 }
 
-.mixer-label {
-  font-size: 11px;
+.volume-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.volume-desc {
+  font-size: 10px;
+  color: var(--color-text-muted);
+}
+
+.volume-segments {
+  display: flex;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 2px;
+  gap: 2px;
+}
+
+.vol-segment-btn {
+  background: none;
+  border: none;
+  border-radius: 9px;
+  padding: 5px 8px;
   color: var(--color-text-secondary);
-  font-weight: 500;
-}
-
-/* Sliders */
-.slider {
-  -webkit-appearance: none;
-  width: 100%;
-  height: 5px;
-  border-radius: 3px;
-  background: rgba(255, 255, 255, 0.08);
-  outline: none;
-}
-
-.slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: var(--color-accent-teal);
-  box-shadow: 0 0 10px var(--color-accent-teal-glow);
+  font-family: var(--font-primary);
+  font-size: 10px;
+  font-weight: 700;
   cursor: pointer;
-  transition: transform 0.1s ease;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.slider::-webkit-slider-thumb:active {
-  transform: scale(1.25);
+.vol-segment-btn:hover {
+  color: var(--color-text-primary);
+}
+
+.vol-segment-btn:active {
+  transform: scale(0.95);
+}
+
+.vol-segment-btn.active {
+  background: rgba(100, 223, 223, 0.1);
+  color: var(--color-accent-teal);
+  box-shadow: 0 0 8px rgba(100, 223, 223, 0.05);
 }
 
 /* 7. Modal & Overlays */

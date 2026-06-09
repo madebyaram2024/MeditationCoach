@@ -1,5 +1,5 @@
 /* ==========================================================================
-   MEDITATION COACH - WEB AUDIO SYNTH ENGINE
+   AETHER - WEB AUDIO SYNTH ENGINE
    ========================================================================= */
 
 class MeditationAudioEngine {

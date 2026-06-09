@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mc-v3';
+const CACHE_NAME = 'mc-v4';
 const ASSETS = [
   './',
   'index.html',

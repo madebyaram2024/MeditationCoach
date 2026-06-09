@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Meditation Coach - Free Mindfulness Assistant</title>
+  <title>Aether - Cosmic Breath & Mindfulness</title>
   <!-- Google Fonts: Plus Jakarta Sans for premium typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
-  <meta name="description" content="A 100% free meditation assistant. Calming breathing exercises, synthesized ambient soundscapes, and streak trackers.">
+  <meta name="description" content="A 100% free and ad-free cosmic breath assistant. Calming breathing exercises, synthesized ambient soundscapes, and streak trackers.">
   <meta name="theme-color" content="#0d0d1e">
   <link rel="manifest" href="manifest.json">
   <!-- Web App Manifest capabilities -->
@@ -23,9 +23,9 @@
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "name": "Meditation Coach",
+    "name": "Aether",
     "url": "https://madebyaram2024.github.io/MeditationCoach/",
-    "description": "A 100% free and ad-free meditation assistant. Calming breathing exercises, synthesized ambient soundscapes, and streak trackers.",
+    "description": "A 100% free and ad-free cosmic breath assistant. Calming breathing exercises, synthesized ambient soundscapes, and streak trackers.",
     "applicationCategory": "HealthApplication",
     "operatingSystem": "All",
     "browserRequirements": "Requires HTML5, Web Audio API, Canvas",
@@ -49,9 +49,9 @@
     <div id="splash-screen" class="splash-screen">
       <div class="splash-content">
         <div class="splash-logo-wrapper">
-          <img src="logo.svg" alt="Meditation Coach Logo" class="splash-logo">
+          <img src="logo.svg" alt="Aether Logo" class="splash-logo">
         </div>
-        <h1 class="splash-title">Meditation Coach</h1>
+        <h1 class="splash-title">Aether</h1>
         <div class="splash-loader">
           <div class="loader-line"></div>
         </div>
@@ -75,8 +75,8 @@
         <div class="logo-wrapper">
           <canvas id="logo-canvas" width="90" height="90"></canvas>
         </div>
-        <h1 class="app-title">Meditation Coach</h1>
-        <p class="tagline">Your 100% free mindfulness companion</p>
+        <h1 class="app-title">Aether</h1>
+        <p class="tagline">Cosmic breath & mindfulness</p>
       </header>
 
       <main class="welcome-main animate-fade-in delay-1">
@@ -85,7 +85,7 @@
           <div class="card-icon">✨</div>
           <div class="card-body">
             <h3>Start Your Journey</h3>
-            <p>Welcome to Meditation Coach. This is a <strong>100% free</strong>, ad-free space built to help you find clarity, reduce anxiety, and sleep deeply.</p>
+            <p>Welcome to Aether. This is a <strong>100% free</strong>, ad-free space built to help you find clarity, reduce anxiety, and sleep deeply.</p>
           </div>
         </div>
 
@@ -236,24 +236,56 @@
         </div>
         <div class="mixer-sliders">
           <!-- Drone Carrier Pad -->
-          <div class="mixer-row">
-            <span class="mixer-label">🧘 Meditation Drone</span>
-            <input type="range" id="volume-drone" class="slider" min="0" max="1" step="0.05" value="0.7">
+          <div class="volume-control-group">
+            <div class="volume-info">
+              <span class="volume-title">🧘 Meditation Drone</span>
+              <span class="volume-desc">Grounding low-frequency carrier pad</span>
+            </div>
+            <div class="volume-segments" data-channel="drone">
+              <button class="vol-segment-btn" data-level="0">Off</button>
+              <button class="vol-segment-btn" data-level="0.3">Soft</button>
+              <button class="vol-segment-btn active" data-level="0.7">Med</button>
+              <button class="vol-segment-btn" data-level="1.0">Deep</button>
+            </div>
           </div>
           <!-- Rain Synth -->
-          <div class="mixer-row">
-            <span class="mixer-label">🌧️ Ambient Rain</span>
-            <input type="range" id="volume-rain" class="slider" min="0" max="1" step="0.05" value="0.3">
+          <div class="volume-control-group">
+            <div class="volume-info">
+              <span class="volume-title">🌧️ Ambient Rain</span>
+              <span class="volume-desc">Procedural filtered white noise drops</span>
+            </div>
+            <div class="volume-segments" data-channel="rain">
+              <button class="vol-segment-btn" data-level="0">Off</button>
+              <button class="vol-segment-btn active" data-level="0.3">Soft</button>
+              <button class="vol-segment-btn" data-level="0.7">Med</button>
+              <button class="vol-segment-btn" data-level="1.0">Deep</button>
+            </div>
           </div>
           <!-- Singing Bowl Resonance -->
-          <div class="mixer-row">
-            <span class="mixer-label">🥣 Singing Bowl</span>
-            <input type="range" id="volume-bowl" class="slider" min="0" max="1" step="0.05" value="0.4">
+          <div class="volume-control-group">
+            <div class="volume-info">
+              <span class="volume-title">🥣 Singing Bowl</span>
+              <span class="volume-desc">Harmonic metallic bowl strikes</span>
+            </div>
+            <div class="volume-segments" data-channel="bowl">
+              <button class="vol-segment-btn" data-level="0">Off</button>
+              <button class="vol-segment-btn active" data-level="0.3">Soft</button>
+              <button class="vol-segment-btn" data-level="0.7">Med</button>
+              <button class="vol-segment-btn" data-level="1.0">Deep</button>
+            </div>
           </div>
           <!-- Binaural Beats Pulse -->
-          <div class="mixer-row">
-            <span class="mixer-label">🧠 Binaural Beats (Theta)</span>
-            <input type="range" id="volume-binaural" class="slider" min="0" max="1" step="0.05" value="0.0">
+          <div class="volume-control-group">
+            <div class="volume-info">
+              <span class="volume-title">🧠 Binaural Beats</span>
+              <span class="volume-desc">6Hz Theta wave cerebral beats</span>
+            </div>
+            <div class="volume-segments" data-channel="binaural">
+              <button class="vol-segment-btn active" data-level="0">Off</button>
+              <button class="vol-segment-btn" data-level="0.3">Soft</button>
+              <button class="vol-segment-btn" data-level="0.7">Med</button>
+              <button class="vol-segment-btn" data-level="1.0">Deep</button>
+            </div>
           </div>
         </div>
       </div>
@@ -286,7 +318,7 @@
           <h2>Support Free Mindfulness</h2>
         </div>
         <div class="modal-body">
-          <p>Meditation Coach is 100% free and ad-free. If this app helps you find peace, please consider supporting us directly via Cash App.</p>
+          <p>Aether is 100% free and ad-free. If this app helps you find peace, please consider supporting us directly via Cash App.</p>
           
           <!-- Cash App Presentation Container -->
           <div class="cashapp-container">
@@ -332,7 +364,7 @@
           <div class="card donation-appeal-card">
             <h4>Help Us Stay Free</h4>
             <p>We believe mindfulness should be accessible to all. Since we are 100% free, donations from users like you keep us online.</p>
-            <button id="modal-donate-btn" class="btn btn-secondary btn-sm">Support Meditation Coach</button>
+            <button id="modal-donate-btn" class="btn btn-secondary btn-sm">Support Aether</button>
           </div>
 
           <button id="complete-done-btn" class="btn btn-primary btn-block">Back to Home</button>
@@ -345,7 +377,7 @@
       <div class="modal card thankyou-card text-center">
         <div class="sparkle-anim">✨🙏✨</div>
         <h2>Thank You Deeply!</h2>
-        <p>Your generous contribution helps us maintain and share Meditation Coach with thousands of people around the world.</p>
+        <p>Your generous contribution helps us maintain and share Aether with thousands of people around the world.</p>
         <p class="quote-italic">"Generosity brings happiness at every stage of its expression."</p>
         <button id="thankyou-close-btn" class="btn btn-primary btn-block">Return</button>
       </div>
@@ -362,10 +394,10 @@
         </button>
         <div class="modal-header">
           <div class="download-icon-glow">📱</div>
-          <h2>Install Meditation Coach</h2>
+          <h2>Install Aether</h2>
         </div>
         <div class="modal-body">
-          <p>Add Meditation Coach to your Home Screen to use it full-screen, offline, and ad-free just like a native app.</p>
+          <p>Add Aether to your Home Screen to use it full-screen, offline, and ad-free just like a native app.</p>
           
           <div class="tabs-container">
             <div class="tab-headers">
